@@ -1,15 +1,17 @@
+# Gradle files
+.gradle/
+build/
+app/build/
+
+# IDE config
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
 local.properties
+
+# macOS cruft
+.DS_Store
+
+# External builds
+.externalNativeBuild/
+.cxx/
+captures/
