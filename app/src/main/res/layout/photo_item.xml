@@ -5,4 +5,4 @@
     android:layout_height="match_parent">
 
 </LinearLayout>
-<!-- For RecyclerView in AlbumActivity
+<!-- For RecyclerView in AlbumActivity -->
