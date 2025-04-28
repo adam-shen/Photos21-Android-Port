@@ -1,6 +1,7 @@
 package com.example.photosandroid.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.photosandroid.AlbumActivity;
 import com.example.photosandroid.R;
 import com.example.photosandroid.model.Album;
 
@@ -34,6 +36,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
     public void onBindViewHolder(@NonNull AlbumViewHolder holder, int position) {
         Album album = albums.get(position);
         holder.albumNameText.setText(album.getName());
+
+        // Open AlbumActivity when an album is clicked
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AlbumActivity.class);
+            intent.putExtra("albumName", album.getName());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -41,6 +50,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         return albums.size();
     }
 
+    // ViewHolder class
     public static class AlbumViewHolder extends RecyclerView.ViewHolder {
         TextView albumNameText;
 

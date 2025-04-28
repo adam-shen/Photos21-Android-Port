@@ -39,7 +39,7 @@ public class Photo implements Serializable {
     public void addTag(Tag tag) {
         // Enforce single-value restriction for certain tag types
         if ("location".equalsIgnoreCase(tag.getName())) {
-            tags.removeIf(existingTag -> "location".equalsIgnoreCase(existingTag.getName())); // Lamda expression
+            tags.removeIf(existingTag -> "location".equalsIgnoreCase(existingTag.getName())); // Lambda expression
         }
         tags.add(tag); // Add the tag (Set ensures no duplicates)
         this.lastEdited = LocalDateTime.now();
