@@ -3,6 +3,7 @@ package com.example.photosandroid;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Album> albums;
     private RecyclerView albumRecyclerView;
+    private TextView emptyAlbumText;
     private AlbumAdapter albumAdapter;
     private static final String FILE_NAME = "albums.ser";
 
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         albumRecyclerView = findViewById(R.id.albumRecyclerView);
+        emptyAlbumText = findViewById(R.id.emptyAlbumText);
         albumRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         albums = SerializationUtil.load(this, FILE_NAME);
@@ -39,7 +42,10 @@ public class MainActivity extends AppCompatActivity {
                 showAlbumOptionsDialog(album, position);
             }
         });
+
         albumRecyclerView.setAdapter(albumAdapter);
+
+        updateEmptyState();
 
         Button addAlbumButton = findViewById(R.id.addAlbumButton);
         addAlbumButton.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 albums.add(newAlbum);
                 albumAdapter.notifyItemInserted(albums.size() - 1);
                 SerializationUtil.save(albums, MainActivity.this, FILE_NAME);
+                updateEmptyState();
             }
         });
     }
@@ -69,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private void showRenameAlbumDialog(Album album, int position) {
         android.widget.EditText input = new android.widget.EditText(this);
         input.setText(album.getName());
-        input.setSelection(input.getText().length()); // move cursor to end
+        input.setSelection(input.getText().length()); // Move cursor to end
 
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Rename Album")
@@ -98,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     albums.remove(position);
                     SerializationUtil.save(albums, this, FILE_NAME);
                     albumAdapter.notifyItemRemoved(position);
+                    updateEmptyState();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
@@ -112,6 +120,15 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    private void updateEmptyState() {
+        if (albums.isEmpty()) {
+            emptyAlbumText.setVisibility(View.VISIBLE);
+            albumRecyclerView.setVisibility(View.GONE);
+        } else {
+            emptyAlbumText.setVisibility(View.GONE);
+            albumRecyclerView.setVisibility(View.VISIBLE);
+        }
+    }
 }
 
 //Home screen: show album list

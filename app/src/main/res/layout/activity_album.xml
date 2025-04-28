@@ -15,6 +15,16 @@
         android:layout_gravity="center_horizontal"
         android:paddingBottom="12dp" />
 
+    <TextView
+        android:id="@+id/emptyAlbumText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No albums yet. Tap 'Add Album' to get started."
+        android:textSize="16sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="16dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/photoRecyclerView"
         android:layout_width="match_parent"
