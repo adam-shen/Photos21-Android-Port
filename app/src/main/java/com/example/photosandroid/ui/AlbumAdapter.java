@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.photosandroid.AlbumActivity;
 import com.example.photosandroid.R;
 import com.example.photosandroid.model.Album;
+import com.example.photosandroid.MainActivity;
 
 import java.util.ArrayList;
 
@@ -19,10 +20,17 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
     private ArrayList<Album> albums;
     private Context context;
+    private OnAlbumLongClickListener longClickListener;
 
-    public AlbumAdapter(ArrayList<Album> albums, Context context) {
+    public interface OnAlbumLongClickListener {
+        void onAlbumLongClicked(Album album, int position);
+    }
+
+
+    public AlbumAdapter(ArrayList<Album> albums, Context context, OnAlbumLongClickListener longClickListener) {
         this.albums = albums;
         this.context = context;
+        this.longClickListener = longClickListener;
     }
 
     @NonNull
@@ -43,6 +51,15 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             intent.putExtra("albumName", album.getName());
             context.startActivity(intent);
         });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                longClickListener.onAlbumLongClicked(album, position);
+                return true;
+            }
+        });
+
     }
 
     @Override
