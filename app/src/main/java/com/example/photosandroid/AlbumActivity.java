@@ -30,6 +30,9 @@ public class AlbumActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         albumName = getIntent().getStringExtra("albumName");
 
@@ -77,4 +80,11 @@ public class AlbumActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish(); // Finish AlbumActivity and go back to MainActivity
+        return true;
+    }
+
 }
