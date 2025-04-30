@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PhotosAndroid">
 
+        <activity android:name=".ui.SlideshowActivity" />
+
         <activity
             android:name=".AlbumActivity"
             android:label="Album"

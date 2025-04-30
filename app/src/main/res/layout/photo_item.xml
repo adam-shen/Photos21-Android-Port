@@ -4,25 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:padding="8dp">
 
-    <TextView
-        android:id="@+id/photoCaptionText"
+    <ImageView
+        android:id="@+id/photoThumbnail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Photo Caption"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/photoDateText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray" />
-
+        android:layout_height="180dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"/>
 </LinearLayout>
+
+
 
 
     <!-- For RecyclerView in AlbumActivity -->

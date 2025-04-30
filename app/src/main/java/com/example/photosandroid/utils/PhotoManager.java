@@ -1,39 +1,49 @@
 package com.example.photosandroid.utils;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.photosandroid.R;
 import com.example.photosandroid.model.Photo;
-
-import java.time.format.DateTimeFormatter;
+import com.example.photosandroid.ui.SlideshowActivity;
 import java.util.ArrayList;
 
 public class PhotoManager extends RecyclerView.Adapter<PhotoManager.PhotoViewHolder> {
 
-    private ArrayList<Photo> photos = new ArrayList<>();
+    private ArrayList<Photo> photos;
+    private String albumName;
+    private PhotoClickListener photoClickListener;
 
-    public PhotoManager(ArrayList<Photo> photos) {
-        this.photos = photos;
+    public interface PhotoClickListener {
+        void onPhotoLongClicked(int position);
     }
 
+    public PhotoManager(ArrayList<Photo> photos, String albumName) {
+        this.photos = photos;
+        this.albumName = albumName;
+    }
 
-    public  void addPhoto(Photo photo) {
+    public void setPhotoClickListener(PhotoClickListener listener) {
+        this.photoClickListener = listener;
+    }
+
+    public void addPhoto(Photo photo) {
         photos.add(photo);
     }
 
-    public  void removePhoto(Photo photo) {
-        photos.remove(photo);
+    public void removePhoto(int index) {
+        photos.remove(index);
     }
 
-    public  void clearPhotos() {
-        photos.clear();
-    }
-
-    public  ArrayList<Photo> getPhotos() {
+    public ArrayList<Photo> getPhotos() {
         return photos;
     }
 
@@ -48,23 +58,34 @@ public class PhotoManager extends RecyclerView.Adapter<PhotoManager.PhotoViewHol
     public void onBindViewHolder(@NonNull PhotoViewHolder holder, int position) {
         Photo photo = photos.get(position);
 
-        String displayCaption = photo.getCaption();
-        if (displayCaption == null || displayCaption.trim().isEmpty()) {
-            String[] parts = photo.getFilepath().split("/");
-            displayCaption = parts[parts.length - 1];
-        }
+        holder.itemView.setOnClickListener(v -> {
+            int currentPos = holder.getAdapterPosition();
+            if (currentPos != RecyclerView.NO_POSITION) {
+                Intent intent = new Intent(v.getContext(), SlideshowActivity.class);
+                intent.putExtra("photoIndex", currentPos);
+                intent.putExtra("albumName", albumName);
+                v.getContext().startActivity(intent);
+            }
+        });
 
-        String formattedDate = "Unknown Date";
-        if (photo.getDateTaken() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
-            formattedDate = photo.getDateTaken().format(formatter);
-        }
+        holder.itemView.setOnLongClickListener(v -> {
+            int currentPos = holder.getAdapterPosition();
+            if (currentPos != RecyclerView.NO_POSITION && photoClickListener != null) {
+                photoClickListener.onPhotoLongClicked(currentPos);
+            }
+            return true;
+        });
 
-        holder.photoCaptionText.setText(displayCaption);
-        holder.photoDateText.setText(formattedDate);
+        try {
+            Uri uri = Uri.parse(photo.getFilepath());
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(holder.itemView.getContext().getContentResolver(), uri);
+            holder.photoThumbnail.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            holder.photoThumbnail.setImageResource(android.R.drawable.ic_menu_report_image);
+            Toast.makeText(holder.itemView.getContext(), "Image file not found", Toast.LENGTH_SHORT).show();
+        }
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -72,13 +93,11 @@ public class PhotoManager extends RecyclerView.Adapter<PhotoManager.PhotoViewHol
     }
 
     public static class PhotoViewHolder extends RecyclerView.ViewHolder {
-        TextView photoCaptionText;
-        TextView photoDateText;
+        ImageView photoThumbnail;
 
         public PhotoViewHolder(@NonNull View itemView) {
             super(itemView);
-            photoCaptionText = itemView.findViewById(R.id.photoCaptionText);
-            photoDateText = itemView.findViewById(R.id.photoDateText);
+            photoThumbnail = itemView.findViewById(R.id.photoThumbnail);
         }
     }
 }

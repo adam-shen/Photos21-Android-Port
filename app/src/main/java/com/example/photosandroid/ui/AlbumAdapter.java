@@ -47,20 +47,25 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
         // Open AlbumActivity when an album is clicked
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AlbumActivity.class);
-            intent.putExtra("albumName", album.getName());
-            context.startActivity(intent);
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                longClickListener.onAlbumLongClicked(album, position);
-                return true;
+            int currentPos = holder.getAdapterPosition();
+            if (currentPos != RecyclerView.NO_POSITION) {
+                Album currentAlbum = albums.get(currentPos);
+                Intent intent = new Intent(context, AlbumActivity.class);
+                intent.putExtra("albumName", currentAlbum.getName());
+                context.startActivity(intent);
             }
         });
 
+        holder.itemView.setOnLongClickListener(v -> {
+            int currentPos = holder.getAdapterPosition();
+            if (currentPos != RecyclerView.NO_POSITION) {
+                Album currentAlbum = albums.get(currentPos);
+                longClickListener.onAlbumLongClicked(currentAlbum, currentPos);
+            }
+            return true;
+        });
     }
+
 
     @Override
     public int getItemCount() {
