@@ -135,5 +135,4 @@ public class AlbumActivity extends AppCompatActivity {
         finish(); // Finish AlbumActivity and go back to MainActivity
         return true;
     }
-
 }

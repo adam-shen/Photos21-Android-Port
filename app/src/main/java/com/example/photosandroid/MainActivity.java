@@ -7,10 +7,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.content.Intent;
+
 
 import com.example.photosandroid.model.Album;
 import com.example.photosandroid.ui.AlbumAdapter;
 import com.example.photosandroid.utils.SerializationUtil;
+import com.example.photosandroid.SearchActivity;
 
 import java.util.ArrayList;
 
@@ -58,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
                 updateEmptyState();
             }
         });
+
+        Button searchButton = findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void showAlbumOptionsDialog(Album album, int position) {

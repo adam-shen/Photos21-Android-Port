@@ -13,6 +13,8 @@
         android:theme="@style/Theme.PhotosAndroid">
 
         <activity android:name=".ui.SlideshowActivity" />
+        <activity android:name=".SearchActivity" />
+
 
         <activity
             android:name=".AlbumActivity"

@@ -1,7 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tag 1 (type:value)"
+        android:textStyle="bold" />
+
+    <AutoCompleteTextView
+        android:id="@+id/tagInput1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="e.g., person:John"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tag 2 (optional)"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
+    <AutoCompleteTextView
+        android:id="@+id/tagInput2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="e.g., location:Paris"
+        android:inputType="text" />
+
+    <RadioGroup
+        android:id="@+id/searchModeGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <RadioButton
+            android:id="@+id/andRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="AND" />
+
+        <RadioButton
+            android:id="@+id/orRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OR"
+            android:layout_marginStart="32dp" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/resultTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Results:"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/resultRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
 </LinearLayout>
